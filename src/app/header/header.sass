@@ -1,0 +1,49 @@
+.app-header
+	display: flex
+	align-items: center
+	justify-content: center
+	background: linear-gradient(90deg, #a18cd1 0%, #6d5bba 100%)
+	color: #fff
+	padding: 2rem 1rem 1.5rem 1rem
+	box-shadow: 0 4px 16px rgba(30, 41, 59, 0.12)
+	border-bottom-left-radius: 2rem
+	border-bottom-right-radius: 2rem
+	position: relative
+	overflow: hidden
+
+.header-logo
+	width: 64px
+	height: 64px
+	object-fit: contain
+	display: inline-block
+	margin: 0 1rem 0 0
+	box-shadow: none
+	border-radius: 0
+	background: transparent
+	vertical-align: middle
+
+.app-header h1
+	display: inline-block
+	vertical-align: middle
+	margin: 0
+	font-family: 'Inter Tight', 'Segoe UI', Arial, sans-serif
+	font-size: 2.5rem
+	font-weight: 700
+	letter-spacing: -0.05em
+	text-shadow: 0 2px 8px rgba(30, 41, 59, 0.10)
+	background: none
+	color: #3a2a4d
+
+// Decorative accent
+.app-header::after
+	content: ''
+	display: block
+	position: absolute
+	left: 50%
+	bottom: 0
+	width: 80%
+	height: 8px
+	background: linear-gradient(90deg, #a18cd1 0%, #6d5bba 100%)
+	border-radius: 4px
+	transform: translateX(-50%)
+	opacity: 0.7
