@@ -15,7 +15,7 @@ import { Task } from "./task/task";
 export class App {
   protected title = 'Angular-App';
   user = DUMMY_USERS;
-  selectedUser !: string;
+  selectedUser ?: string;
 
   onSelectedUser(id: string) {
     const foundUser = this.user.find(user => user.id === id);
