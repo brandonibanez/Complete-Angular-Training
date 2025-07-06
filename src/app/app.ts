@@ -4,11 +4,12 @@ import { HeaderComponent } from './header/header';
 import { User } from "./user/user";
 import { DUMMY_USERS } from "./user/dummy-user";
 import { Task } from "./task/task";
+import { IndividualTask } from './task/individual-task/individual-task';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, User, Task],
+  imports: [RouterOutlet, HeaderComponent, User, Task, IndividualTask],
   templateUrl: './app.html',
   styleUrl: './app.sass'
 })
