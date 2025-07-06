@@ -1,9 +1,9 @@
 <div>
     <button>
         <img 
-        [src]="imagePath"
-        [alt]="'Avatar of ' + name"
+        [src]="imagePath()"
+        [alt]="'Avatar of ' + name()"
         />
-        <span>{{name}}</span>
+        <span>{{name()}}</span>
     </button>
 </div>
