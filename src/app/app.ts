@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './header/header';
 import { User } from "./user/user";
+import { DUMMY_USERS } from "./user/dummy-user";
 
 @Component({
   selector: 'app-root',
@@ -12,4 +13,5 @@ import { User } from "./user/user";
 })
 export class App {
   protected title = 'Angular-App';
+  user = DUMMY_USERS;
 }

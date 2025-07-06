@@ -2,10 +2,18 @@
 <main>
   <ul id="users">
     <li>
-      <app-user />
+      <app-user [avatar]="user[0].avatar" [name]="user[0].name"></app-user>
+    </li>
+    <li>
+      <app-user [avatar]="user[1].avatar" [name]="user[1].name"></app-user>
+    </li>
+    <li>
+      <app-user [avatar]="user[2].avatar" [name]="user[2].name"></app-user>
+    </li>
+    <li>
+      <app-user [avatar]="user[3].avatar" [name]="user[3].name"></app-user>
     </li>
   </ul>
 </main>
   
-
 <router-outlet></router-outlet>
