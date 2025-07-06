@@ -14,4 +14,8 @@ import { DUMMY_USERS } from "./user/dummy-user";
 export class App {
   protected title = 'Angular-App';
   user = DUMMY_USERS;
+
+  onSelectedUser(id: string) {
+    console.log('Selected User ID:', id);
+  }
 }
