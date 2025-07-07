@@ -16,12 +16,13 @@ import { IndividualTask } from './task/individual-task/individual-task';
 export class App {
   protected title = 'Angular-App';
   user = DUMMY_USERS;
-  selectedUser ?: string;
+  selectedUserId ?: string;
+
+  get selectedUser() {
+    return this.user.find((user) => user.id === this.selectedUserId);
+  }
 
   onSelectedUser(id: string) {
-    const foundUser = this.user.find(user => user.id === id);
-    if (foundUser) {
-      this.selectedUser = foundUser.name;
-    }
+    this.selectedUserId = id;
   }
 }
