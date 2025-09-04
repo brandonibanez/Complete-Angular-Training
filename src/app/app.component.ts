@@ -1,18 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import { CounterComponent } from './counter/counter.component';
-import { MessagesComponent } from './messages/messages.component';
+import { interval } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
-  imports: [CounterComponent, MessagesComponent],
+  templateUrl: './app.component.html'
 })
-export class AppComponent {
-  get debugOutput() {
-    console.log('[AppComponent] "debugOutput" binding re-evaluated.');
-    return 'AppComponent Component Debug Output';
+export class AppComponent implements OnInit {
+  ngOnInit(): void {
+    interval();
   }
+
 }
