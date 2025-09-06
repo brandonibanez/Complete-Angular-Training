@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 
 import { Place } from './place.model';
 import { map, catchError, throwError, Observable, tap } from 'rxjs';
@@ -9,14 +9,31 @@ import { HttpClient } from '@angular/common/http';
 })
 export class PlacesService {
   private userPlaces = signal<Place[]>([]);
+  private availablePlaces = signal<Place[]>([]);
   private httpClient = inject(HttpClient);
 
   loadedUserPlaces = this.userPlaces.asReadonly();
+  loadedAvailablePlaces = this.availablePlaces.asReadonly();
 
   loadAvailablePlaces() {
     return this.fetchAvailablePlaces(
       'http://localhost:3000/places',
       'Failed to fetch places. Please try again later.'
+    ).pipe(
+      map((places) => {
+        this.availablePlaces.set(places);
+        return places;
+      }),
+      tap(() => this.filterAvailablePlaces())
+    );
+  }
+
+  filterAvailablePlaces() {
+    this.availablePlaces.update((places) =>
+      places.filter(
+        (place) =>
+          !this.userPlaces().some((userPlace) => userPlace.id === place.id)
+      )
     );
   }
 
@@ -29,6 +46,7 @@ export class PlacesService {
 
   addPlaceToUserPlaces(place: Place) {
     this.userPlaces.update((prevPlaces) => [...prevPlaces, place]);
+    this.filterAvailablePlaces();
 
     return this.httpClient.put('http://localhost:3000/user-places/', {
       placeId: place.id,
