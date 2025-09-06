@@ -22,20 +22,34 @@ export class AvailablePlacesComponent implements OnInit {
 
   ngOnInit(): void {
     this.isFetching.set(true);
-    const subscription = this.httpClient.get<{ places: Place[]}>('http://localhost:3000/places').pipe(
-      map(resData => resData.places),
-      catchError((err) => {
-        console.error(err);
-        return throwError(() => new Error('Failed to fetch places. Please try again later.'));
-      })
-    ).subscribe({
-      next: (response) => this.places.set(response),
-      error: (err: Error) => this.error.set(err.message),
-      complete: () => this.isFetching.set(false)
-    });
+    const subscription = this.httpClient
+      .get<{ places: Place[] }>('http://localhost:3000/places')
+      .pipe(
+        map((resData) => resData.places),
+        catchError((err) => {
+          return throwError(
+            () => new Error('Failed to fetch places. Please try again later.')
+          );
+        })
+      )
+      .subscribe({
+        next: (response) => this.places.set(response),
+        error: (err: Error) => this.error.set(err.message),
+        complete: () => this.isFetching.set(false),
+      });
 
     this.destroyRef.onDestroy(() => {
       subscription.unsubscribe();
     });
+  }
+
+  onSelectPlace(selectedPlace: Place) {
+    this.httpClient
+      .put('http://localhost:3000/user-places/', {
+        placeId: selectedPlace.id,
+      })
+      .subscribe({
+        next: (response) => console.log(response)
+      });
   }
 }
