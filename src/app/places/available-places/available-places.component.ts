@@ -4,7 +4,7 @@ import { Place } from '../place.model';
 import { PlacesComponent } from '../places.component';
 import { PlacesContainerComponent } from '../places-container/places-container.component';
 import { PlacesService } from '../places.service';
-import { map } from 'rxjs';
+import { map, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-available-places',
@@ -22,10 +22,13 @@ export class AvailablePlacesComponent implements OnInit {
 
   ngOnInit(): void {
     this.isFetching.set(true);
-    const subscription = this.placesService.loadAvailablePlaces().subscribe({
-      error: (err: Error) => this.error.set(err.message),
-      complete: () => this.isFetching.set(false),
-    });
+    const subscription = this.placesService
+      .loadUserPlaces()
+      .pipe(switchMap(() => this.placesService.loadAvailablePlaces()))
+      .subscribe({
+        error: (err: Error) => this.error.set(err.message),
+        complete: () => this.isFetching.set(false),
+      });
 
     this.destroyRef.onDestroy(() => {
       subscription.unsubscribe();

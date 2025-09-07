@@ -23,9 +23,14 @@ export class PlacesService {
       'Failed to fetch places. Please try again later.'
     ).pipe(
       map((places) => {
-        this.availablePlaces.set(places);
-        return places;
-      }));
+        const filtered = places.filter(
+          (place) =>
+            !this.userPlaces().some((userPlace) => userPlace.id === place.id)
+        );
+        this.availablePlaces.set(filtered);
+        return filtered;
+      })
+    );
   }
 
   loadUserPlaces() {
@@ -37,23 +42,49 @@ export class PlacesService {
 
   addPlaceToUserPlaces(place: Place) {
     const prevPlaces = this.userPlaces();
-    if (prevPlaces.some((p) => p.id === place.id)) {
-      this.errorService.showError('Place is already present.');
-    } else {    
-      this.userPlaces.set([...prevPlaces, place]);
-    }
-    
+    this.availablePlaces.set(this.availablePlaces().filter((p) => p.id !== place.id));
+    this.userPlaces.set([...this.userPlaces(), place]);
+    // if (prevPlaces.some((p) => p.id === place.id)) {
+    //   this.errorService.showError('Place is already present.');
+    // } else {
+    //   this.availablePlaces.set(
+    //     this.availablePlaces().filter((p) => p.id !== place.id)
+    //   );
+    //   this.userPlaces.set([...prevPlaces, place]);
+    // }
 
-    return this.httpClient.put('http://localhost:3000/user-places/', {
-      placeId: place.id,
-    }).pipe(catchError((err) => {
-      this.userPlaces.set(prevPlaces);
-      this.errorService.showError('Place is already present.');
-      return throwError(() => new Error('Failed to add place. Please try again later.'));
-    }));
+    return this.httpClient
+      .put('http://localhost:3000/user-places/', {
+        placeId: place.id,
+      })
+      .pipe(
+        catchError((err) => {
+          this.userPlaces.set(prevPlaces);
+          this.errorService.showError('Place is already present.');
+          return throwError(
+            () => new Error('Failed to add place. Please try again later.')
+          );
+        })
+      );
   }
 
-  removeUserPlace(place: Place) {}
+  removeUserPlace(place: Place) {
+    const prevPlaces = this.userPlaces();
+    this.userPlaces.set(this.userPlaces().filter((p) => p.id !== place.id));
+    this.availablePlaces.set([...this.availablePlaces(), place]);
+
+    return this.httpClient
+      .delete(`http://localhost:3000/user-places/${place.id}`)
+      .pipe(
+        catchError((err) => {
+          this.userPlaces.set(prevPlaces);
+          this.errorService.showError('Error removing place.');
+          return throwError(
+            () => new Error('Failed to remove place. Please try again later.')
+          );
+        })
+      );
+  }
 
   private fetchAvailablePlaces(url: string, errorMessage: string) {
     return this.httpClient.get<{ places: Place[] }>(url).pipe(
