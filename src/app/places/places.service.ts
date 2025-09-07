@@ -3,6 +3,7 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { Place } from './place.model';
 import { map, catchError, throwError, Observable, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { ErrorService } from '../shared/error.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,7 @@ export class PlacesService {
   private userPlaces = signal<Place[]>([]);
   private availablePlaces = signal<Place[]>([]);
   private httpClient = inject(HttpClient);
+  private errorService = inject(ErrorService);
 
   loadedUserPlaces = this.userPlaces.asReadonly();
   loadedAvailablePlaces = this.availablePlaces.asReadonly();
@@ -36,9 +38,8 @@ export class PlacesService {
   addPlaceToUserPlaces(place: Place) {
     const prevPlaces = this.userPlaces();
     if (prevPlaces.some((p) => p.id === place.id)) {
-      return throwError(() => new Error('You already added this place to your places.'));
-    } else {
-      // Optimistic update
+      this.errorService.showError('Place is already present.');
+    } else {    
       this.userPlaces.set([...prevPlaces, place]);
     }
     
@@ -47,6 +48,7 @@ export class PlacesService {
       placeId: place.id,
     }).pipe(catchError((err) => {
       this.userPlaces.set(prevPlaces);
+      this.errorService.showError('Place is already present.');
       return throwError(() => new Error('Failed to add place. Please try again later.'));
     }));
   }
