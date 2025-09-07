@@ -23,18 +23,7 @@ export class PlacesService {
       map((places) => {
         this.availablePlaces.set(places);
         return places;
-      }),
-      tap(() => this.filterAvailablePlaces())
-    );
-  }
-
-  filterAvailablePlaces() {
-    this.availablePlaces.update((places) =>
-      places.filter(
-        (place) =>
-          !this.userPlaces().some((userPlace) => userPlace.id === place.id)
-      )
-    );
+      }));
   }
 
   loadUserPlaces() {
@@ -45,12 +34,21 @@ export class PlacesService {
   }
 
   addPlaceToUserPlaces(place: Place) {
-    this.userPlaces.update((prevPlaces) => [...prevPlaces, place]);
-    this.filterAvailablePlaces();
+    const prevPlaces = this.userPlaces();
+    if (prevPlaces.some((p) => p.id === place.id)) {
+      return throwError(() => new Error('You already added this place to your places.'));
+    } else {
+      // Optimistic update
+      this.userPlaces.set([...prevPlaces, place]);
+    }
+    
 
     return this.httpClient.put('http://localhost:3000/user-places/', {
       placeId: place.id,
-    });
+    }).pipe(catchError((err) => {
+      this.userPlaces.set(prevPlaces);
+      return throwError(() => new Error('Failed to add place. Please try again later.'));
+    }));
   }
 
   removeUserPlace(place: Place) {}

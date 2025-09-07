@@ -18,7 +18,6 @@ export class AvailablePlacesComponent implements OnInit {
   error = signal('');
   private destroyRef = inject(DestroyRef);
   placesService = inject(PlacesService);
-  userPlaces = this.placesService.loadedUserPlaces;
   places = this.placesService.loadedAvailablePlaces;
 
   ngOnInit(): void {
