@@ -21,6 +21,7 @@ export class NewTaskComponent {
   enteredTitle = signal('');
   enteredSummary = signal('');
   enteredDate = signal('');
+  submitted = false;
   private tasksService = inject(TasksService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
@@ -34,6 +35,9 @@ export class NewTaskComponent {
       },
       this.userId()
     );
+
+    this.submitted = true;
+
     this.router.navigate(['../'], {
       relativeTo: this.route,
       replaceUrl: true,
@@ -44,12 +48,17 @@ export class NewTaskComponent {
 export const canLeaveEditPage: CanDeactivateFn<NewTaskComponent> = (
   component
 ) => {
+  if (component.submitted) {
+    return true;
+  }
   if (
     component.enteredTitle() ||
     component.enteredSummary() ||
     component.enteredDate()
   ) {
-    return window.confirm('You have unsaved changes. Are you sure you want to leave?');
+    return window.confirm(
+      'You have unsaved changes. Are you sure you want to leave?'
+    );
   } else {
     return true;
   }
