@@ -1,37 +1,44 @@
 import { CanMatchFn, RedirectCommand, Router, Routes } from '@angular/router';
-import { NoTaskComponent } from './tasks/no-task/no-task.component';
-import { UserTasksComponent, resolveTitle, resolveUsername } from './users/user-tasks/user-tasks.component';
-import { NotFoundComponent } from './not-found/not-found.component';
-import { routes as userRoutes } from './users/users.route';
 import { inject } from '@angular/core';
+
+import { routes as userRoutes } from './users/users.routes';
+import { NoTaskComponent } from './tasks/no-task/no-task.component';
+import {
+  UserTasksComponent,
+  resolveTitle,
+  resolveUserName,
+} from './users/user-tasks/user-tasks.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 const dummyCanMatch: CanMatchFn = (route, segments) => {
   const router = inject(Router);
   const shouldGetAccess = Math.random();
-  if (shouldGetAccess < 0.5) {
+  if (shouldGetAccess < 1) {
     return true;
   }
   return new RedirectCommand(router.parseUrl('/unauthorized'));
-}
+};
 
 export const routes: Routes = [
   {
-    path: '',
+    path: '', // <your-domain>/
     component: NoTaskComponent,
-    title: 'No Tasks',
+    // redirectTo: '/users/u1',
+    // pathMatch: 'full'
+    title: 'No task selected',
   },
   {
-    path: 'users/:userId',
+    path: 'users/:userId', // <your-domain>/users/<uid>
     component: UserTasksComponent,
     children: userRoutes,
     canMatch: [dummyCanMatch],
     data: {
-      message: 'Hello'
+      message: 'Hello!',
     },
     resolve: {
-      userName: resolveUsername
+      userName: resolveUserName,
     },
-    title: resolveTitle
+    title: resolveTitle,
   },
   {
     path: '**',
