@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 
 @Component({
-  // selector: 'app-server',
+  selector: 'app-server',
   // selector: '[app-server]',
-  selector: '.app-server',
-  // templateUrl: './server.component.html',
-  template: '<p>server works!</p>',
+  // selector: '.app-server',
+  templateUrl: './server.component.html',
+  // template: '<p>server works!</p>',
   // styleUrl: './server.component.css',
   styles: [
     `
@@ -15,4 +15,9 @@ import { Component } from '@angular/core';
     `,
   ],
 })
-export class ServerComponent {}
+export class ServerComponent {
+
+  serverId: number = 10;
+  serverStatus: string = 'offline';
+
+}
