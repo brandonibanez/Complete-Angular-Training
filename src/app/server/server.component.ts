@@ -17,7 +17,15 @@ import { Component } from '@angular/core';
 })
 export class ServerComponent {
 
+  allowNewServer: boolean = true;
   serverId: number = 10;
   serverStatus: string = 'offline';
+
+  constructor() {
+    setTimeout(() => {
+      this.allowNewServer = false;
+    }, 2000)
+  }
+
 
 }
