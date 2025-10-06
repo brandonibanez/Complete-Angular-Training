@@ -27,5 +27,8 @@ export class ServerComponent {
     }, 2000)
   }
 
+  displayStatus() {
+    console.log(`Server status: ${this.serverStatus}`);
+  }
 
 }
