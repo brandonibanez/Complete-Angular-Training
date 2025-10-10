@@ -20,6 +20,7 @@ export class ServerComponent {
   allowNewServer: boolean = true;
   serverId: number = 10;
   serverStatus: string = 'offline';
+  displayServer: boolean = true;
 
   constructor() {
     setTimeout(() => {
@@ -29,6 +30,10 @@ export class ServerComponent {
 
   displayStatus() {
     console.log(`Server status: ${this.serverStatus}`);
+  }
+
+  getColor() {
+    return this.serverStatus === 'online' ? 'green' : 'red';
   }
 
 }
