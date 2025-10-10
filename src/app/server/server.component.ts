@@ -6,14 +6,14 @@ import { Component } from '@angular/core';
   // selector: '.app-server',
   templateUrl: './server.component.html',
   // template: '<p>server works!</p>',
-  // styleUrl: './server.component.css',
-  styles: [
-    `
-      p {
-        color: blue;
-      }
-    `,
-  ],
+  styleUrl: './server.component.css',
+  // styles: [
+  //   `
+  //     p {
+  //       color: blue;
+  //     }
+  //   `,
+  // ],
 })
 export class ServerComponent {
 
@@ -29,6 +29,8 @@ export class ServerComponent {
   }
 
   displayStatus() {
+    this.displayServer = true;
+    this.serverStatus === 'online' ? this.serverStatus = 'offline' : this.serverStatus = 'online';
     console.log(`Server status: ${this.serverStatus}`);
   }
 
