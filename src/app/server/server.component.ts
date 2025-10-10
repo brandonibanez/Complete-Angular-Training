@@ -20,7 +20,7 @@ export class ServerComponent {
   allowNewServer: boolean = true;
   serverId: number = 10;
   serverStatus: string = 'offline';
-  displayServer: boolean = true;
+  displayServer: boolean = false;
 
   constructor() {
     setTimeout(() => {
