@@ -2,16 +2,16 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { Header } from './header/header';
-import { Recipes } from './recipes/recipes';
-import { RecipeList } from './recipes/recipe-list/recipe-list';
-import { RecipeDetail } from './recipes/recipe-detail/recipe-detail';
-import { RecipeItem } from './recipes/recipe-list/recipe-item/recipe-item';
-import { ShoppingList } from './shopping-list/shopping-list';
-import { ShoppingEdit } from './shopping-list/shopping-edit/shopping-edit';
+import { HeaderComponent } from './header/header.component';
+import { RecipesComponent } from './recipes/recipes.component';
+import { RecipeListComponent } from './recipes/recipe-list/recipe-list.component';
+import { RecipeItemComponent } from './recipes/recipe-list/recipe-item/recipe-item.component';
+import { RecipeDetailComponent } from './recipes/recipe-detail/recipe-detail.component';
+import { ShoppingListComponent } from './shopping-list/shopping-list.component';
+import { ShoppingEditComponent } from './shopping-list/shopping-edit/shopping-edit.component';
 
 @NgModule({
-  declarations: [AppComponent, Header, Recipes, RecipeList, RecipeDetail, RecipeItem, ShoppingList, ShoppingEdit],
+  declarations: [AppComponent, HeaderComponent, RecipesComponent, RecipeListComponent, RecipeItemComponent, RecipeDetailComponent, ShoppingListComponent, ShoppingEditComponent],
   imports: [BrowserModule],
   providers: [],
   bootstrap: [AppComponent],

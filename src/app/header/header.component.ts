@@ -3,9 +3,9 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-header',
   standalone: false,
-  templateUrl: './header.html',
-  styleUrl: './header.css'
+  templateUrl: './header.component.html',
+  styleUrl: './header.component.css'
 })
-export class Header {
+export class HeaderComponent {
 
 }
