@@ -16,3 +16,6 @@
 <ng-template #elseBlock>
   <p>Server was not created!</p>
 </ng-template>
+<p *ngFor="let i of [].constructor(5); let idx = index">
+  Paragraph {{ idx + 1 }}
+</p>
