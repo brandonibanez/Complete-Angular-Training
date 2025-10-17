@@ -30,6 +30,7 @@
             {{ even }}
           </li>
         </div>
+        <div *appUnless="true">Test</div>
       </ul>
       <ng-template [ngIf]="onlyOdd">
         <p appBasicHighlight>Only odd</p>
