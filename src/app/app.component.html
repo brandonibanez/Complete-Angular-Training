@@ -35,7 +35,7 @@
         <p appBasicHighlight>Only odd</p>
       </ng-template>
       <ng-template [ngIf]="onlyOdd">
-        <p appBetterHighlight>Only odd 2</p>
+        <p appBetterHighlight [defaultColor]="'yellow'" [highlightColor]="'lightblue'">Only odd 2</p>
       </ng-template>
     </div>
   </div>
