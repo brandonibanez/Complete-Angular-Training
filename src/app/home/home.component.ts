@@ -22,11 +22,24 @@ export class HomeComponent implements OnInit, OnDestroy {
       let count = 0;
       setInterval(() => {
         observer.next(count++);
+
+        if(count === 2) {
+          observer.complete();
+        }
+
+        if(count > 3) {
+          observer.error(new Error('Count is greater than 3!'));
+        }
+
       }, 1000);
     });
 
     this.subscription = customerObservable.subscribe((count: number) => {
       console.log(count);
+    }, error => {
+      console.error(error.message);
+    }, () => {
+      console.log('Observable completed!');
     });
 
   }
