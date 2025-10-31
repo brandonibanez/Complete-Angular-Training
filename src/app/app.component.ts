@@ -10,6 +10,14 @@ export class AppComponent {
   @ViewChild('form') signupForm!: NgForm;
   answer = 'test';
   genders = ['male', 'female'];
+  user = {
+    username: '',
+    email: '',
+    secretQuestion: '',
+    answer: '',
+    gender: ''
+  };
+  displayData = false;
 
   suggestUserName() {
     const suggestedName = 'Superuser';
@@ -34,11 +42,16 @@ export class AppComponent {
   // }
 
   onSubmit() {
-    if(this.signupForm.valid) {
-      console.log(this.signupForm);
-    } else {
-      alert('Form is invalid');
-    }
-    
+    this.user.username = this.signupForm.value.userData.username;
+    this.user.email = this.signupForm.value.userData.email;
+    this.user.secretQuestion = this.signupForm.value.secret;
+    this.user.answer = this.signupForm.value.questionAnswer;
+    this.user.gender = this.signupForm.value.gender;
+    this.displayData = true;
+    // if(this.signupForm.valid) {
+    //   console.log(this.signupForm);
+    // } else {
+    //   alert('Form is invalid');
+    // }
   }
 }
