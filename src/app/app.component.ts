@@ -18,6 +18,11 @@ export class AppComponent {
   // }
 
   onSubmit() {
-    console.log(this.signupForm);
+    if(this.signupForm.valid) {
+      console.log(this.signupForm);
+    } else {
+      alert('Form is invalid');
+    }
+    
   }
 }
