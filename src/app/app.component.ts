@@ -48,6 +48,10 @@ export class AppComponent {
     this.user.answer = this.signupForm.value.questionAnswer;
     this.user.gender = this.signupForm.value.gender;
     this.displayData = true;
+
+    this.signupForm.resetForm({
+      questionAnswer: 'test'
+    });
     // if(this.signupForm.valid) {
     //   console.log(this.signupForm);
     // } else {
