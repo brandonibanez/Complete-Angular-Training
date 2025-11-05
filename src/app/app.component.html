@@ -17,7 +17,10 @@
                 form.get('userData.username').touched
               "
               class="help-block"
-              >Enter a valid username!</span
+              >
+              <span *ngIf="form.get('userData.username').errors['nameIsInvalid']">Username is invalid!</span>
+              <span *ngIf="form.get('userData.username').errors['required']">This field is required!</span>
+              </span
             >
           </div>
           <div class="form-group">
@@ -47,8 +50,13 @@
         </div>
         <div formArrayName="hobbies">
           <h4>Hobbies</h4>
-          <button class="btn btn-default" type="button" (click)="onAddHobby()">Add Hobby</button>
-          <div class="form-group" *ngFor="let hobbyControl of controls; let i = index" >
+          <button class="btn btn-default" type="button" (click)="onAddHobby()">
+            Add Hobby
+          </button>
+          <div
+            class="form-group"
+            *ngFor="let hobbyControl of controls; let i = index"
+          >
             <input type="text" class="form-control" [formControlName]="i" />
           </div>
         </div>
