@@ -13,7 +13,8 @@
             />
             <span
               *ngIf="
-                !form.get('userData.username').valid && form.get('userData.username').touched
+                !form.get('userData.username').valid &&
+                form.get('userData.username').touched
               "
               class="help-block"
               >Enter a valid username!</span
@@ -28,7 +29,10 @@
               class="form-control"
             />
             <span
-              *ngIf="!form.get('userData.email').valid && form.get('userData.email').touched"
+              *ngIf="
+                !form.get('userData.email').valid &&
+                form.get('userData.email').touched
+              "
               class="help-block"
               >Enter a valid email!</span
             >
@@ -40,6 +44,13 @@
               gender
             }}
           </label>
+        </div>
+        <div formArrayName="hobbies">
+          <h4>Hobbies</h4>
+          <button class="btn btn-default" type="button" (click)="onAddHobby()">Add Hobby</button>
+          <div class="form-group" *ngFor="let hobbyControl of controls; let i = index" >
+            <input type="text" class="form-control" [formControlName]="i" />
+          </div>
         </div>
         <span *ngIf="!form.valid && form.touched" class="help-block"
           >Enter a valid data!</span
