@@ -8,6 +8,7 @@ import {
 import { Ingredient } from '../../shared/ingredient.model';
 import { ShoppingListService } from '../shopping-list.service';
 import { NgForm } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-shopping-edit',
@@ -16,9 +17,24 @@ import { NgForm } from '@angular/forms';
 })
 export class ShoppingEditComponent implements OnInit {
 
+  subscription: Subscription;
+  editMode = false;
+  editedItemIndex: number;
+  editedItem: Ingredient;
+  @ViewChild('form') form: NgForm;
+
   constructor(private slService: ShoppingListService) { }
 
   ngOnInit() {
+    this.subscription = this.slService.startedEditing.subscribe((index: number) => {
+      this.editMode = true;
+      this.editedItemIndex = index;
+      this.editedItem = this.slService.getIngredient(index);
+      this.form.setValue({
+        name: this.editedItem.name,
+        amount: this.editedItem.amount
+      });
+    });
   }
 
   onAddItem(form: NgForm) {
