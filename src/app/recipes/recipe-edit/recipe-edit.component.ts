@@ -45,4 +45,8 @@ export class RecipeEditComponent implements OnInit {
       'ingredients': recipeIngredients
     });
   }
+
+  onSubmit() {
+    console.log(this.recipeForm);
+  }
 }
