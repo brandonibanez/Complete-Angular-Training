@@ -37,6 +37,17 @@ export class RecipeEditComponent implements OnInit {
       recipeName = recipe.name;
       recipeImagePath = recipe.imagePath;
       recipeDescription = recipe.description;
+      if (recipe['ingredients']) {
+        for (let ingredient of recipe.ingredients) {
+          recipeIngredients.push(
+            new FormGroup({
+              'name': new FormControl(ingredient.name),
+              'amount': new FormControl(ingredient.amount)
+            })
+          );
+        }
+      }
+      console.log(recipeIngredients);
     }
     this.recipeForm = new FormGroup({
       'name': new FormControl(recipeName, Validators.required),
@@ -49,4 +60,9 @@ export class RecipeEditComponent implements OnInit {
   onSubmit() {
     console.log(this.recipeForm);
   }
+
+  get controls() {
+    return (<FormArray>this.recipeForm.get('ingredients')).controls;
+  }
+
 }
