@@ -34,5 +34,6 @@ export class PostsService {
 
   clearPosts() {
     // Send Http request
+    return this.http.delete('https://ng-complete-guide-63155-default-rtdb.asia-southeast1.firebasedatabase.app/posts.json');
   }
 }
