@@ -13,6 +13,11 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor() {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const modifiedReq = request.clone({
+      headers: request.headers.append('Auth', 'xyz')
+    });
+    return next.handle(modifiedReq);
+    //
     return next.handle(request);
   }
 }
