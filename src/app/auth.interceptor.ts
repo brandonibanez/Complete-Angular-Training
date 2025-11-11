@@ -19,9 +19,6 @@ export class AuthInterceptor implements HttpInterceptor {
       headers: request.headers.append('Auth', 'xyz')
     });
     return next.handle(modifiedReq).pipe(tap(event => {
-      if(event.type === HttpEventType.Response) {
-        console.log('Response received');
-      }
     }));
   }
 }
