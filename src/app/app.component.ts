@@ -1,19 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { init } from './store/counter.actions';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  templateUrl: './app.component.html'
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
+  list = ['Milk', 'Sugar', 'Bread'];
 
-  constructor(private store: Store) {}
-  
-  ngOnInit(): void {
-    this.store.dispatch(init());
-  }
-
-  
+    onAdd(item) {
+      this.list.push(item);
+    }
 }
