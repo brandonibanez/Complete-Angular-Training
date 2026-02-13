@@ -1,5 +1,6 @@
-import { createReducer, on } from "@ngrx/store";
+import { Action, createReducer, on } from "@ngrx/store";
 import { decrement, increment } from "./counter.actions";
+// import { Increment, Decrement, CounterActions, INCREMENT, DECREMENT } from "./counter.actions";
 
 const initialState = 0;
 
