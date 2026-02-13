@@ -4,19 +4,19 @@ import { decrement, increment } from "./counter.actions";
 
 const initialState = 0;
 
-// export const counterReducer = createReducer(
-//     initialState,
-//     on(increment, (state, { amount }) => state + amount),
-//     on(decrement, state => state - 1)
-// );
+export const counterReducer = createReducer(
+    initialState,
+    on(increment, (state, { amount }) => state + amount),
+    on(decrement, (state, { amount }) => state - amount)
+);
 
-export function counterReducer(state = initialState, action: any) {
-    switch (action.type) {
-        case increment.type:
-            return state + action.amount;
-        case decrement.type:
-            return state - 1;
-        default:
-            return state;
-    }
-}
+// export function counterReducer(state = initialState, action: any) {
+//     switch (action.type) {
+//         case increment.type:
+//             return state + action.amount;
+//         case decrement.type:
+//             return state - 1;
+//         default:
+//             return state;
+//     }
+// }
