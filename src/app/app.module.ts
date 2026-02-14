@@ -7,6 +7,7 @@ import { CounterControlsComponent } from './counter-controls/counter-controls.co
 import { StoreModule } from '@ngrx/store';
 import { counterReducer } from './counter-store/counter.reducer';
 import { AsyncPipe } from '@angular/common';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,7 @@ import { AsyncPipe } from '@angular/common';
   ],
   imports: [BrowserModule, StoreModule.forRoot({
     counter: counterReducer
-  }), AsyncPipe],
+  }), AsyncPipe, EffectsModule.forRoot([])],
   providers: [],
   bootstrap: [AppComponent],
 })
