@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { init } from './counter-store/counter.actions';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css'],
   standalone: false,
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+
+  ngOnInit(): void {
+    this.store.dispatch(init());
+  }
+
+  constructor(private store: Store<{ counter: number }>) { }
 }
