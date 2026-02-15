@@ -1,25 +1,22 @@
-import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { CounterOutputComponent } from './counter-output/counter-output.component';
-import { CounterControlsComponent } from './counter-controls/counter-controls.component';
-import { StoreModule } from '@ngrx/store';
-import { counterReducer } from './counter-store/counter.reducer';
-import { AsyncPipe } from '@angular/common';
-import { EffectsModule } from '@ngrx/effects';
-import { CounterEffects } from './counter-store/counter.effects';
+import { HomeComponent } from './home/home.component';
+import { UserComponent } from './user/user.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CounterOutputComponent,
-    CounterControlsComponent,
+    HomeComponent,
+    UserComponent
   ],
-  imports: [BrowserModule, StoreModule.forRoot({
-    counter: counterReducer
-  }), AsyncPipe, EffectsModule.forRoot([CounterEffects])],
+  imports: [
+    BrowserModule,
+    AppRoutingModule
+  ],
   providers: [],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
