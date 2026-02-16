@@ -9,6 +9,16 @@ function mustContainQuestionMark(control: AbstractControl) {
   return { mustContainQuestionMark: true };
 }
 
+function mustBeSame(control: AbstractControl) {
+  const password = control.get('password');
+  const confirmPassword = control.get('confirmPassword');
+
+  if (password && confirmPassword && password.value === confirmPassword.value) {
+    return null;
+  }
+  return { mustBeSame: true };
+}
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -20,7 +30,8 @@ export class LoginComponent {
   form = new FormGroup({
     email: new FormControl('', { validators: [Validators.required, Validators.email] }),
     password: new FormControl('', { validators: [Validators.required, Validators.minLength(6), mustContainQuestionMark] }),
-  });
+    confirmPassword: new FormControl('', { validators: [Validators.required] }),
+  }, { validators: [mustBeSame] });
 
   onSubmit() {
     console.log(this.form.value);
