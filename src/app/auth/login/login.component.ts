@@ -1,6 +1,6 @@
 import { OnEndResult } from './../../../../node_modules/esbuild/lib/main.d';
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -11,8 +11,8 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 })
 export class LoginComponent {
   form = new FormGroup({
-    email: new FormControl(''),
-    password: new FormControl(''),
+    email: new FormControl('', { validators: [Validators.required, Validators.email] }),
+    password: new FormControl('', { validators: [Validators.required, Validators.minLength(6)] }),
   });
 
   onSubmit() {
