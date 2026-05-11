@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
-import { Component, inject, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormsModule, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
-import { Candidate } from './candidate';
+import { Component, computed, effect, inject, OnInit } from '@angular/core';
+import { AbstractControl, FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Test2Service } from '../service/test2.service';
+import { Candidate } from './candidate';
+
 
 function mustContainQuestionMark(control: AbstractControl) {
   if (control.value.includes('?')) {
@@ -18,15 +19,15 @@ function mustBeSame(control: AbstractControl) {
   return password !== confirmPassword ? { mustBeSame: true } : null;
 }
 
-function mustContainChar(char:string) {
-  return (control:AbstractControl) => {
-    if(!control.value) {
+function mustContainChar(char: string) {
+  return (control: AbstractControl) => {
+    if (!control.value) {
       return null
     }
 
     const charizard = control.value.includes(char);
 
-    return charizard ? null : { mustContainChar: {requiredChar:char} };
+    return charizard ? null : { mustContainChar: { requiredChar: char } };
   }
 }
 
@@ -37,13 +38,13 @@ function mustContainChar(char:string) {
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
-export class LoginComponent implements OnInit{
+export class LoginComponent implements OnInit {
   private http = inject(HttpClient);
   candidate = this.testService.candidate;
 
   form = this.fb.group({
-    email: ['', { validators: [Validators.required, Validators.email] }],
-    password: ['', { validators: [Validators.required, mustContainChar('!')] }],
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required]],
     // password: new FormControl('', { validators: [Validators.required, Validators.minLength(6), mustContainQuestionMark] }),
     confirmPassword: ['', [Validators.required]],
   }, { validators: mustBeSame });
@@ -60,13 +61,28 @@ export class LoginComponent implements OnInit{
   }
 
   getCandidates(): Observable<Candidate[]> {
-    return this.http.get<Candidate[]>("http://localhost:8080/candidates").pipe(map(a => a.filter(a => a.name == "John")));
+    console.log("GET METHOD!");
+    return this.http.get<Candidate[]>("http://localhost:8080/candidates/7").pipe(map(a => a.filter(a => a.name == "John")));
   }
 
-  constructor(private testService: Test2Service, private fb: FormBuilder) { }
+  addCandidate() {
+    console.log("POST METHOD!");
+    this.http.post("http://localhost:8080/candidates", { name: "Test", place: "fourth"}).subscribe();
+  }
+
+  constructor(private testService: Test2Service, private fb: FormBuilder) {
+    effect(() => {
+      console.log(`Inside effect ${this.candidate()}`);
+    })
+  }
 
   onSubmit() {
     console.log(this.form);
+    // this.addCandidate();
+    console.log(computed(() => {
+      console.log("Inside computed!");
+      return `This is my signal ${this.candidate()}`;
+    })());
     this.getCandidates().subscribe({
       next: a => {
         console.log(a);
