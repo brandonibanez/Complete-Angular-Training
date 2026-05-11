@@ -3,7 +3,7 @@
   <div class="control-row">
     <div class="control no-margin">
       <label for="email">Email</label>
-      <input id="email" type="email" formControlName="email" (ngModelChange)="test($event)"/>
+      <input id="email" type="email" formControlName="email"/>
     </div>
 
     <div class="control no-margin">
@@ -27,5 +27,5 @@
     <p class="error" style="color:red">Please fill out the form correctly.</p>
   }
 
-  <p>{{candidate$ | async}}</p>
+  <p>{{candidate()}}</p>
 </form>

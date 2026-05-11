@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TestService } from '../service/test.service';
+import { Test2Service } from '../service/test2.service';
 import { AsyncPipe } from '@angular/common';
 
 @Component({
@@ -11,9 +11,9 @@ import { AsyncPipe } from '@angular/common';
 })
 export class SignupComponent implements OnInit{
 
-  constructor(private testService: TestService) {}
+  constructor(private testService: Test2Service) {}
 
-  candidate$ = this.testService.candidate$;
+  candidate = this.testService.candidate;
 
   ngOnInit(): void {
     // this.testService.candidate$.subscribe(res => {
