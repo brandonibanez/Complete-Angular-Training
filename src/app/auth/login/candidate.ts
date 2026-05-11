@@ -1,5 +1,5 @@
 export interface Candidate {
-  id: number;
-  name: string;
-  place: string;
+  id: number,
+  name: string,
+  place: string,
 }
