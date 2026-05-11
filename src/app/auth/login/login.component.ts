@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { map, Observable, throwError } from 'rxjs';
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Candidate } from './candidate';
-import { TestService } from '../service/test.service';
 import { AsyncPipe } from '@angular/common';
+import { Test2Service } from '../service/test2.service';
 
 function mustContainQuestionMark(control: AbstractControl) {
   if (control.value.includes('?')) {
@@ -32,26 +32,31 @@ function mustBeSame(control: AbstractControl) {
 })
 export class LoginComponent implements OnInit {
   private http = inject(HttpClient);
-  candidate$ = this.testService.candidate$;
+  candidate = this.testService.candidate;
 
-  form = new FormGroup({
-    email: new FormControl('', { validators: [Validators.required, Validators.email] }),
-    password: new FormControl('', { validators: [Validators.required] }),
+  form = this.fb.group({
+    email: ['', { validators: [Validators.required, Validators.email] }],
+    password: ['', { validators: [Validators.required] }],
     // password: new FormControl('', { validators: [Validators.required, Validators.minLength(6), mustContainQuestionMark] }),
-    confirmPassword: new FormControl('', { validators: [Validators.required] }),
-  }, { validators: [mustBeSame] });
+    confirmPassword: ['', [Validators.required]],
+  }, { validators: mustBeSame });
 
   ngOnInit() {
     setTimeout(() => {
       this.testService.updateUser('SUPER BOOGER!');
     }, 1000);
+    this.form.get('email')?.valueChanges.pipe(map(a => a!.length > 0 ? a + '@test.com' : ' ')).subscribe(val => {
+      if (val) {
+        this.test(val);
+      }
+    });
   }
 
   getCandidates(): Observable<Candidate[]> {
     return this.http.get<Candidate[]>("http://localhost:8080/candidates").pipe(map(a => a.filter(a => a.name == "John")));
   }
 
-  constructor(private testService: TestService) { }
+  constructor(private testService: Test2Service, private fb: FormBuilder) { }
 
   onSubmit() {
     console.log(this.form.value);
