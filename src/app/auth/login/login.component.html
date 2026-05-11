@@ -1,10 +1,9 @@
 <form [formGroup]="form" (ngSubmit)="form.valid && onSubmit()">
   <h2>Login</h2>
-
   <div class="control-row">
     <div class="control no-margin">
       <label for="email">Email</label>
-      <input id="email" type="email" formControlName="email" />
+      <input id="email" type="email" formControlName="email" (ngModelChange)="test($event)"/>
     </div>
 
     <div class="control no-margin">
@@ -25,6 +24,8 @@
   </div>
 
   @if (form.invalid && form.touched && form.dirty) {
-    <p class="error">Please fill out the form correctly.</p>
+    <p class="error" style="color:red">Please fill out the form correctly.</p>
   }
+
+  <p>{{candidate$ | async}}</p>
 </form>
