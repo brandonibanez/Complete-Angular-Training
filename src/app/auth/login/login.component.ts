@@ -1,9 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { map, Observable, throwError } from 'rxjs';
-import { Component, inject, OnInit, signal } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { map, Observable } from 'rxjs';
+import { Component, inject, OnInit } from '@angular/core';
+import { AbstractControl, FormBuilder, FormsModule, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { Candidate } from './candidate';
-import { AsyncPipe } from '@angular/common';
 import { Test2Service } from '../service/test2.service';
 
 function mustContainQuestionMark(control: AbstractControl) {
@@ -14,29 +13,37 @@ function mustContainQuestionMark(control: AbstractControl) {
 }
 
 function mustBeSame(control: AbstractControl) {
-  const password = control.get('password');
-  const confirmPassword = control.get('confirmPassword');
+  const password = control.get('password')?.value;
+  const confirmPassword = control.get('confirmPassword')?.value;
+  return password !== confirmPassword ? { mustBeSame: true } : null;
+}
 
-  if (password && confirmPassword && password.value === confirmPassword.value) {
-    return null;
+function mustContainChar(char:string) {
+  return (control:AbstractControl) => {
+    if(!control.value) {
+      return null
+    }
+
+    const charizard = control.value.includes(char);
+
+    return charizard ? null : { mustContainChar: {requiredChar:char} };
   }
-  return { mustBeSame: true };
 }
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, FormsModule, AsyncPipe],
+  imports: [ReactiveFormsModule, FormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit{
   private http = inject(HttpClient);
   candidate = this.testService.candidate;
 
   form = this.fb.group({
     email: ['', { validators: [Validators.required, Validators.email] }],
-    password: ['', { validators: [Validators.required] }],
+    password: ['', { validators: [Validators.required, mustContainChar('!')] }],
     // password: new FormControl('', { validators: [Validators.required, Validators.minLength(6), mustContainQuestionMark] }),
     confirmPassword: ['', [Validators.required]],
   }, { validators: mustBeSame });
@@ -59,7 +66,7 @@ export class LoginComponent implements OnInit {
   constructor(private testService: Test2Service, private fb: FormBuilder) { }
 
   onSubmit() {
-    console.log(this.form.value);
+    console.log(this.form);
     this.getCandidates().subscribe({
       next: a => {
         console.log(a);
