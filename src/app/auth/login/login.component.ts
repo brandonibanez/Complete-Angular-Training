@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { Component, computed, effect, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -72,6 +72,21 @@ export class LoginComponent implements OnInit, OnChanges {
     this.http.post("http://localhost:8080/candidates", { name: "Test", place: "fourth"}).subscribe();
   }
 
+  getToken() {
+    const secret = "t46ymCed8DGmb0WXmRMCyvHZ2qFMMqvj";
+
+    const body = new HttpParams()
+    .set('grant_type', 'client_credentials')
+    .set('client_id', 'test')
+    .set('client_secret', secret);
+
+    this.http.post("http://localhost:80/realms/master/protocol/openid-connect/token", body, {
+      headers: {
+        'Content-Type': "application/x-www-form-urlencoded",
+      }
+    }).subscribe((res:any) => console.log(res.access_token));
+  }
+
   constructor(private testService: Test2Service, private fb: FormBuilder) {
     // effect(() => {
     //   console.log(`Inside effect ${this.candidate()}`);
@@ -87,6 +102,7 @@ export class LoginComponent implements OnInit, OnChanges {
   onSubmit() {
     console.log(this.form);
     // this.addCandidate();
+    this.getToken();
     console.log(computed(() => {
       console.log("Inside computed!");
       return `This is my signal ${this.candidate()}`;
