@@ -5,7 +5,7 @@ import { Injectable, signal } from '@angular/core';
 })
 export class Test2Service {
 
-    private val = signal<string>('Test');
+    private val = signal<string>('');
   
     candidate = this.val.asReadonly();
   

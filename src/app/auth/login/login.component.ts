@@ -1,9 +1,11 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
-import { Component, computed, effect, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, computed, DestroyRef, effect, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Test2Service } from '../service/test2.service';
 import { Candidate } from './candidate';
+import { Router } from '@angular/router';
+import { AuthService } from '../../core/services/auth.service';
 
 
 function mustContainQuestionMark(control: AbstractControl) {
@@ -39,10 +41,14 @@ function mustContainChar(char: string) {
   styleUrl: './login.component.css',
 })
 export class LoginComponent implements OnInit, OnChanges {
+  ref = inject(DestroyRef);
+  router = inject(Router);
+  authServicce = inject(AuthService);
   @Input() something:string = '';
   @Output() something2 = new EventEmitter();
   private http = inject(HttpClient);
   candidate = this.testService.candidate;
+  token: string = 'test';
 
   form = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -55,11 +61,12 @@ export class LoginComponent implements OnInit, OnChanges {
     setTimeout(() => {
       this.testService.updateUser('SUPER BOOGER!');
     }, 1000);
-    this.form.get('email')?.valueChanges.pipe(map(a => a!.length > 0 ? a + '@test.com' : ' ')).subscribe(val => {
-      if (val) {
-        this.test(val);
-      }
-    });
+    // this.form.get('email')?.valueChanges.pipe(map(a => a!.length > 0 ? a + '@test.com' : ' ')).subscribe(val => {
+    //   if (val) {
+    //     this.test(val);
+    //   }
+    // });
+    // this.authServicce.getToken();
   }
 
   getCandidates(): Observable<Candidate[]> {
@@ -69,22 +76,8 @@ export class LoginComponent implements OnInit, OnChanges {
 
   addCandidate() {
     console.log("POST METHOD!");
-    this.http.post("http://localhost:8080/candidates", { name: "Test", place: "fourth"}).subscribe();
-  }
-
-  getToken() {
-    const secret = "t46ymCed8DGmb0WXmRMCyvHZ2qFMMqvj";
-
-    const body = new HttpParams()
-    .set('grant_type', 'client_credentials')
-    .set('client_id', 'test')
-    .set('client_secret', secret);
-
-    this.http.post("http://localhost:80/realms/master/protocol/openid-connect/token", body, {
-      headers: {
-        'Content-Type': "application/x-www-form-urlencoded",
-      }
-    }).subscribe((res:any) => console.log(res.access_token));
+    const body  = { name: "Test", place: "fourth"};
+    this.http.post("http://localhost:8080/candidates", body).subscribe();
   }
 
   constructor(private testService: Test2Service, private fb: FormBuilder) {
@@ -102,7 +95,6 @@ export class LoginComponent implements OnInit, OnChanges {
   onSubmit() {
     console.log(this.form);
     // this.addCandidate();
-    this.getToken();
     console.log(computed(() => {
       console.log("Inside computed!");
       return `This is my signal ${this.candidate()}`;
@@ -116,6 +108,7 @@ export class LoginComponent implements OnInit, OnChanges {
       error: a => console.log(`Object is empty! ${a}`),
       complete: () => console.log("It is done!")
     });
+    this.router.navigateByUrl('/signup');
   }
 
   test(val: string) {
