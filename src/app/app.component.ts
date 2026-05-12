@@ -9,4 +9,13 @@ import { SignupComponent } from "./auth/signup/signup.component";
   templateUrl: './app.component.html',
   imports: [LoginComponent, SignupComponent],
 })
-export class AppComponent {}
+export class AppComponent {
+
+  something = "LOLS"
+
+  showSomething(val:any) {
+    this.something = val;
+    console.log(`From APP COMPONENT: ${val}`);
+  }
+
+}

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
-import { Component, computed, effect, inject, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, computed, effect, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { AbstractControl, FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Test2Service } from '../service/test2.service';
 import { Candidate } from './candidate';
 
@@ -38,7 +38,9 @@ function mustContainChar(char: string) {
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnChanges {
+  @Input() something:string = '';
+  @Output() something2 = new EventEmitter();
   private http = inject(HttpClient);
   candidate = this.testService.candidate;
 
@@ -62,7 +64,7 @@ export class LoginComponent implements OnInit {
 
   getCandidates(): Observable<Candidate[]> {
     console.log("GET METHOD!");
-    return this.http.get<Candidate[]>("http://localhost:8080/candidates/7").pipe(map(a => a.filter(a => a.name == "John")));
+    return this.http.get<Candidate[]>("http://localhost:8080/candidates").pipe(map(a => a.filter(a => a.name == "John")));
   }
 
   addCandidate() {
@@ -71,9 +73,15 @@ export class LoginComponent implements OnInit {
   }
 
   constructor(private testService: Test2Service, private fb: FormBuilder) {
-    effect(() => {
-      console.log(`Inside effect ${this.candidate()}`);
-    })
+    // effect(() => {
+    //   console.log(`Inside effect ${this.candidate()}`);
+    // })
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log("NG ON CHANGES");
+    const something = changes['something'];
+    console.log(`Old value: ${something.previousValue}, New value: ${something.currentValue}`);
   }
 
   onSubmit() {
@@ -87,6 +95,7 @@ export class LoginComponent implements OnInit {
       next: a => {
         console.log(a);
         this.testService.updateUser(a[0].name);
+        this.something2.emit(a[0].name)
       },
       error: a => console.log(`Object is empty! ${a}`),
       complete: () => console.log("It is done!")
