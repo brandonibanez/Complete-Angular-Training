@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Test2Service } from '../service/test2.service';
-import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [AsyncPipe],
+  imports: [],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.css',
 })
