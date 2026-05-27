@@ -7,6 +7,7 @@ import { Candidate } from './candidate';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { ButtonComponent } from "../button/button.component";
+import { BrandonCandidateComponent } from '../../../../projects/brandon-candidate/src/lib/brandon-candidate.component';
 
 
 function mustContainQuestionMark(control: AbstractControl) {
@@ -37,14 +38,14 @@ function mustContainChar(char: string) {
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, FormsModule, ButtonComponent],
+  imports: [ReactiveFormsModule, FormsModule, ButtonComponent, BrandonCandidateComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
 export class LoginComponent implements OnInit, OnChanges {
   ref = inject(DestroyRef);
   router = inject(Router);
-  authServicce = inject(AuthService);
+  // authServicce = inject(AuthService);
   @Input() something:string = '';
   @Output() something2 = new EventEmitter();
   private http = inject(HttpClient);
