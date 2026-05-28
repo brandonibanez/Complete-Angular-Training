@@ -5,9 +5,11 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   template: `
+    <ng-content><p>no content</p></ng-content>
     <p>
       brandon-candidate works!
     </p>
+
   `,
   styles: ``
 })
