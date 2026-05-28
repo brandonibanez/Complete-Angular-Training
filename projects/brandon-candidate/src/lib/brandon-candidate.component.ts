@@ -5,11 +5,11 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   template: `
-    <ng-content><p>no content</p></ng-content>
+    <ng-content select="[header]"><p>no content 1st</p></ng-content>
     <p>
       brandon-candidate works!
     </p>
-
+    <ng-content><p>no content 2nd</p></ng-content>
   `,
   styles: ``
 })
